@@ -39,7 +39,7 @@
                 <h2 class="section-title" data-aos="fade-down">Contact</h2>
         
                 <div class="contact_container bd_grid">
-                  <form action="https://script.google.com/macros/s/AKfycbwz6znm01I8J0gJ3XovyX_IvWpEs3CO5djdV7YWS9uTPnk1utmElS567PudBH_WoRpJ8g/exec" method="POST" class="contact_form">
+                  <form name="submit-to-google-sheet">
                     <input
                       name="Name"
                       type="text"
@@ -68,6 +68,7 @@
                     <button type="submit">Send</button>
 
                   </form>
+                  <spam id="msg" style="color: brown;font-size: larger;"></spam>
                 </div>
               </section>
               
@@ -81,6 +82,26 @@
         once: false,
       });
     </script>
+
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycby85QYeDMPVz3uFuEyWmvGC1_2N7P0Qv-rdN0Wbg5ZQBYxXEIDqAzo9y5zww4X6GfvbJw/exec'
+  const form = document.forms['submit-to-google-sheet']
+  const msg = document.getElementById("msg")
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+          msg.innerHTML = "Message sent successfully"
+          
+          setTimeout(function(){
+              msg.innerHTML = ""
+          },5000)
+          form.reset()
+      })
+      .catch(error => console.error('Error!', error.message))
+  })
+</script>
     
 </body>
 </html>
